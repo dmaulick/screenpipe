@@ -1,0 +1,17 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main geometric shape representing interconnected systems -->
+  <path d="M16 2L26 8V24L16 30L6 24V8L16 2Z" stroke="currentColor" stroke-width="2" fill="none"/>
+  
+  <!-- Inner connecting lines representing knowledge flow -->
+  <path d="M10 10L16 16L22 10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+  <path d="M10 22L16 16L22 22" stroke="currentColor" stroke-width="1.5" fill="none"/>
+  
+  <!-- Central dot representing AI core -->
+  <circle cx="16" cy="16" r="2" fill="currentColor"/>
+  
+  <!-- Corner nodes representing platform touchpoints -->
+  <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+  <circle cx="22" cy="10" r="1.5" fill="currentColor"/>
+  <circle cx="10" cy="22" r="1.5" fill="currentColor"/>
+  <circle cx="22" cy="22" r="1.5" fill="currentColor"/>
+</svg>

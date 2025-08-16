@@ -724,7 +724,7 @@ prioritize precision over recall - better to return no match than a wrong match.
 						}}
 					>
 						<DialogContent className="sm:max-w-[500px]">
-							<DialogTitle>Search your timeline</DialogTitle>
+							<DialogTitle>Query Juno Memory</DialogTitle>
 							<motion.div
 								initial={{ opacity: 0, y: -20 }}
 								animate={{ opacity: 1, y: 0 }}
@@ -735,7 +735,7 @@ prioritize precision over recall - better to return no match than a wrong match.
 									<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 									<Input
 										autoFocus
-										placeholder="search in your timeline..."
+										placeholder="Query your platform engineering sessions..."
 										className="pl-9 h-12"
 										value={searchQuery}
 										onChange={(e) => setSearchQuery(e.target.value)}

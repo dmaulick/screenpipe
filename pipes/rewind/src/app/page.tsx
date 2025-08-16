@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useRef, useMemo, useCallback } from "react";
-import { Loader2, RotateCcw, AlertCircle } from "lucide-react";
+import { Loader2, RotateCcw, AlertCircle, Zap } from "lucide-react";
 import { AudioTranscript } from "@/components/timeline/audio-transcript";
 import { AIPanel } from "@/components/timeline/ai-panel";
 import { TimelineProvider } from "@/lib/hooks/use-timeline-selection";
@@ -331,23 +331,33 @@ export default function Timeline() {
 					msUserSelect: "none",
 				}}
 			>
-				<div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
-					<div className="flex items-center gap-4">
-						<TimelineControls
-							currentDate={currentDate}
-							startAndEndDates={startAndEndDates}
-							onDateChange={handleDateChange}
-							onJumpToday={handleJumpToday}
-							className="shadow-lg"
-						/>
-						{/* <TimelineSearch2
-              frames={frames}
-              onResultSelect={animateToIndex}
-              onSearchResults={setSearchResults}
-            /> */}
+				<div className="absolute top-4 left-4 right-4 z-50">
+					<div className="flex items-center justify-between">
+						<div className="flex items-center gap-2">
+							<div className="w-8 h-8 juno-gradient rounded-lg flex items-center justify-center">
+								<Zap className="w-5 h-5 text-white" />
+							</div>
+							<span className="text-2xl font-bold">Juno</span>
+						</div>
+						
+						<div className="flex items-center gap-4">
+							<TimelineControls
+								currentDate={currentDate}
+								startAndEndDates={startAndEndDates}
+								onDateChange={handleDateChange}
+								onJumpToday={handleJumpToday}
+								className="shadow-lg"
+							/>
+							{/* <TimelineSearch2
+								frames={frames}
+								onResultSelect={animateToIndex}
+								onSearchResults={setSearchResults}
+							/> */}
+						</div>
+						
 						<div>
 							<CommandShortcut>⌘K</CommandShortcut>{" "}
-							<span className="text-xs text-muted-foreground">to search</span>
+							<span className="text-xs text-muted-foreground">to query Juno</span>
 						</div>
 					</div>
 				</div>
@@ -355,10 +365,10 @@ export default function Timeline() {
 				<div className="flex-1 relative min-h-0">
 					{isLoading && (
 						<div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm">
-							<div className="bg-background/95 p-6 border rounded-xl shadow-lg text-center space-y-3 max-w-md mx-4">
-								<h3 className="font-medium">Loading Timeline</h3>
+							<div className="glass p-6 rounded-xl shadow-xl text-center space-y-3 max-w-md mx-4">
+								<h3 className="font-medium">Loading Juno Memory</h3>
 								<p className="text-sm text-muted-foreground">
-									Fetching your recorded frames...
+									Accessing your platform engineering sessions...
 								</p>
 								<Loader2 className="h-5 w-5 animate-spin mx-auto mt-2" />
 							</div>
@@ -367,7 +377,7 @@ export default function Timeline() {
 
 					{!error && message && (
 						<div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm">
-							<div className="bg-background/95 p-6 border rounded-xl shadow-lg text-center space-y-3 max-w-md mx-4">
+							<div className="glass p-6 rounded-xl shadow-xl text-center space-y-3 max-w-md mx-4">
 								<h3 className="font-medium">Processing</h3>
 								<p className="text-sm text-muted-foreground">{message}</p>
 								<Loader2 className="h-5 w-5 animate-spin mx-auto mt-2" />
@@ -385,15 +395,15 @@ export default function Timeline() {
 									</h3>
 								</div>
 								<p className="text-sm text-muted-foreground">
-									Unable to reach your screenpipe data. Please verify that the
-									screenpipe turned on.
+									Unable to connect to Juno backend. Please verify that
+									backend is running.
 								</p>
 								<button
 									onClick={handleRefresh}
 									className="flex items-center gap-2 px-4 py-2 bg-background hover:bg-muted transition-colors rounded-lg border border-input mx-auto"
 								>
 									<RotateCcw className="h-4 w-4" />
-									<span>Reload Timeline</span>
+									<span>Reconnect to Juno</span>
 								</button>
 							</div>
 						</div>

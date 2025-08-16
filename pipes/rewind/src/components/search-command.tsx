@@ -55,7 +55,7 @@ export function SearchCommand() {
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTitle className="sr-only">Search Command</DialogTitle>
+			<DialogTitle className="sr-only">Juno Query Command</DialogTitle>
 			<CustomDialogContent
 				className="p-2 max-w-screen-sm"
 				customClose={
