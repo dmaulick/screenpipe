@@ -22,6 +22,24 @@ type WorkLog = z.infer<typeof workLog> & {
   endTime: string;
 };
 
+function truncateContentForContext(data: ContentItem[], maxItems: number = 10): ContentItem[] {
+  // Take the most recent items and truncate long text content
+  return data.slice(-maxItems).map(item => {
+    if ('content' in item && typeof item.content === 'object' && 'text' in item.content) {
+      return {
+        ...item,
+        content: {
+          ...item.content,
+          text: item.content.text.length > 500 ? 
+            item.content.text.substring(0, 500) + '...' : 
+            item.content.text
+        }
+      };
+    }
+    return item;
+  });
+}
+
 async function generateWorkLog(
   data: ContentItem[],
   obsidianPath: string,
@@ -33,11 +51,18 @@ async function generateWorkLog(
     throw new Error("ai preset not configured");
   }
 
+  // Check if this is likely an OpenAI model that supports json_object format
+  const supportsJsonFormat = aiPreset.model.startsWith('gpt-') && 
+    (aiPreset.url === undefined || aiPreset.url.includes('openai.com'));
+
   let enrichedPrompt = aiPreset.prompt || "";
 
   if (enrichedPrompt && obsidianPath) {
     enrichedPrompt = await extractLinkedContent(enrichedPrompt, obsidianPath);
   }
+
+  // Truncate data to fit context window
+  const truncatedData = truncateContentForContext(data);
 
   const defaultPrompt = `You are analyzing screen recording data from Screenpipe, a desktop app that records screens & mics 24/7 to provide context to AI systems.
     The data includes OCR text, audio transcriptions, and media files from the user's desktop activity.
@@ -47,7 +72,9 @@ async function generateWorkLog(
     Here are some user instructions:
     ${enrichedPrompt}
 
-    Screen data: ${JSON.stringify(data)}
+    Screen data: ${JSON.stringify(truncatedData)}
+
+    ${supportsJsonFormat ? '' : 'IMPORTANT: You MUST respond with valid JSON only. Do not include any explanation or markdown formatting around the JSON.'}
 
     Rules:
     - analyze the screen data carefully to understand the user's work context and activities
@@ -100,13 +127,39 @@ async function generateWorkLog(
 
   const openai = new OpenAI(openaiConfig);
 
-  const response = await openai.chat.completions.create({
+  const requestParams: any = {
     model: aiPreset.model,
     messages: [{ role: "user", content: defaultPrompt }],
-    response_format: { type: "json_object" },
-  });
+  };
 
-  const jsonResponse = JSON.parse(response.choices[0].message.content || "{}");
+  if (supportsJsonFormat) {
+    requestParams.response_format = { type: "json_object" };
+  }
+
+  const response = await openai.chat.completions.create(requestParams);
+
+  let jsonResponse;
+  try {
+    const content = response.choices[0].message.content || "{}";
+    
+    // If model doesn't support json_object format, try to extract JSON from the response
+    if (!supportsJsonFormat) {
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      const jsonString = jsonMatch ? jsonMatch[0] : content;
+      jsonResponse = JSON.parse(jsonString);
+    } else {
+      jsonResponse = JSON.parse(content);
+    }
+  } catch (error) {
+    console.warn("Failed to parse JSON response, using fallback:", error);
+    // Fallback response structure
+    jsonResponse = {
+      title: "Activity log",
+      description: "Unable to parse AI response",
+      tags: ["#error"],
+      mediaLinks: []
+    };
+  }
 
   const formatDate = (date: Date) => {
     return date.toLocaleString("en-US", {
