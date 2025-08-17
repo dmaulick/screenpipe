@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Juno • Platform Engineering Memory",
+	title: "Juno",
 	description: "Clone your platform engineering expertise into AI agents",
 };
 
