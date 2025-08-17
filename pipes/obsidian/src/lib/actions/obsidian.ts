@@ -23,7 +23,9 @@ export async function findVaultRoot(startPath: string): Promise<string> {
       currentPath = path.dirname(currentPath);
     }
   }
-  throw new Error("could not find obsidian vault root (.obsidian folder)");
+  console.log(`could not find obsidian vault root (.obsidian folder) THIS IS THE START PATH ${startPath}`);
+  console.log(currentPath);
+  throw new Error(`could not find obsidian vault root (.obsidian folder) starting from ${startPath}`);
 }
 
 export async function extractLinkedContent(
