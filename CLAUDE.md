@@ -25,6 +25,11 @@ cargo bench                  # Run benchmarks
 # E2E testing (in screenpipe-app-tauri)
 bun test:e2e                 # WebDriver tests
 bun test:e2e:terminator      # Terminator integration tests
+
+# Individual crate testing
+cargo test -p screenpipe-core
+cargo test -p screenpipe-server
+cargo test -p screenpipe-vision
 ```
 
 ### Development
@@ -38,6 +43,12 @@ bun test:e2e:terminator      # Terminator integration tests
 # Run desktop app in dev mode
 cd screenpipe-app-tauri
 bun dev
+
+# Development build (faster compilation)
+cargo build --bin screenpipe
+
+# Clean build artifacts
+cd screenpipe-app-tauri && bun run clean
 ```
 
 ### Plugin Development
@@ -84,10 +95,13 @@ Audio Recording → STT → Speaker ID → Database → API/WebSocket
 
 ### Code Style (from .cursorrules)
 - **Rust**: Use anyhow errors, prefer tokio over std, avoid mutex (use channels)
-- **Frontend**: TypeScript + Next.js + Tailwind + shadcn + Lucide icons
+- **Frontend**: TypeScript + Next.js + Tailwind + shadcn + Lucide icons + MagicUI + Framer Motion
 - **Logging**: Lowercase for logging and UI text
-- **Error handling**: Use empty states and skeletons, avoid toast notifications
+- **Error handling**: Use empty states and skeletons, avoid toast notifications (never use toast errors)
+- **HTML/React**: Proper escaping with &apos; instead of " when inside quotes
+- **Code Comments**: Do not remove @ts-ignore unless explicitly asked
 - Keep files under 600 lines when possible
+- When providing full code, provide COMPLETE implementations without "// rest of code" comments
 
 ### Key Patterns
 - **Concurrency**: Channels over mutexes/locks
@@ -146,8 +160,11 @@ sqlite3 ~/.screenpipe/db.sqlite "DELETE FROM _sqlx_migrations WHERE version = XX
 - **Frontend**: Next.js app embedded in Tauri webview
 
 ## Dependencies
-- **AI/ML**: Candle framework for local inference, HuggingFace Hub
+- **AI/ML**: Candle framework for local inference, HuggingFace Hub, Tokenizers
 - **Audio/Video**: FFmpeg, Whisper, voice activity detection  
-- **Database**: SQLite with FTS5 full-text search
-- **UI**: Tauri, Next.js, Tailwind CSS, Radix UI
+- **Database**: SQLite with FTS5 full-text search, SQLx for migrations
+- **UI**: Tauri, Next.js 15+, Tailwind CSS, Radix UI, shadcn/ui, Lucide icons, MagicUI, Framer Motion
+- **State Management**: Zustand, Easy Peasy
 - **Build**: Bun for JavaScript, Cargo for Rust
+- **Testing**: WebDriver for E2E tests, Mocha for Terminator tests
+- **Monitoring**: Sentry for error tracking, PostHog for analytics
