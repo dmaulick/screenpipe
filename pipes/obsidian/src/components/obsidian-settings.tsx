@@ -719,7 +719,7 @@ export function ObsidianSettings() {
                       id="logTimeWindow"
                       name="logTimeWindow"
                       type="number"
-                      min="1"
+                      min=".1"
                       step="1"
                       max="60"
                       defaultValue={

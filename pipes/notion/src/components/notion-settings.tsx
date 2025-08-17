@@ -373,7 +373,7 @@ export function NotionSettings() {
 
           for (const line of lines) {
             const response = JSON.parse(line);
-            console.log("progress:", response);
+            // console.log("progress:", response);
 
             // Update toast with progress if available
             if (response.total && response.completed) {

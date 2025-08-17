@@ -72,7 +72,8 @@ export const TimelineSlider = ({
 		let currentGroup: StreamTimeSeriesResponse[] = [];
 
 		visibleFrames.forEach((frame) => {
-			const appName = frame.devices[0].metadata.app_name;
+			// Safely get app name with fallbacks
+			const appName = frame.devices?.[0]?.metadata?.app_name || "Unknown App";
 			if (appName !== currentApp) {
 				if (currentGroup.length > 0) {
 					groups.push({
@@ -224,11 +225,16 @@ export const TimelineSlider = ({
 						>
 							<div className="absolute top-0 left-1/2 w-5 h-5 rounded-full -translate-x-1/2 bg-background/50 backdrop-blur p-0.5">
 								<img
-									src={`http://localhost:11435/app-icon?name=${group.appName}`}
+									src={`http://localhost:11435/app-icon?name=${encodeURIComponent(group.appName)}`}
 									className="w-full h-full opacity-70"
 									alt={group.appName}
 									loading="lazy"
 									decoding="async"
+									onError={(e) => {
+										// Fallback to a generic icon if app icon fails to load
+										const target = e.target as HTMLImageElement;
+										target.style.display = 'none';
+									}}
 								/>
 							</div>
 							{group.frames.map((frame) => {
@@ -280,7 +286,7 @@ export const TimelineSlider = ({
 											frames[currentIndex].timestamp === frame.timestamp) && (
 											<div className="absolute bottom-full left-1/2 z-50 -translate-x-1/2 mb-6 w-max bg-background border rounded-md px-2 py-1 text-xs shadow-lg">
 												<p className="font-medium">
-													{frame.devices[0].metadata.app_name}
+													{frame.devices?.[0]?.metadata?.app_name || "Unknown App"}
 												</p>
 												<p className="text-muted-foreground">
 													{new Date(frame.timestamp).toLocaleString()}
