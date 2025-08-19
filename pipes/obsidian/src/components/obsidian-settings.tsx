@@ -584,7 +584,7 @@ export function ObsidianSettings() {
               <Label htmlFor="vaultPath" className="flex items-center gap-2">
                 <FolderOpen className="h-4 w-4" />
                 obsidian vault path (this is the folder where we will save the
-                logs and insights)
+                logs and insights) Default to use - /Users/davidmaulick/code/juno-demo-vault
               </Label>
               <div className="flex gap-2">
                 <div className="flex-1 relative">
@@ -719,14 +719,16 @@ export function ObsidianSettings() {
                       id="logTimeWindow"
                       name="logTimeWindow"
                       type="number"
-                      min="1"
+                      min=".1"
                       step="1"
                       max="60"
                       defaultValue={
                         pipeSettings?.logTimeWindow
                           ? pipeSettings?.logTimeWindow / 60000
-                          : 5
+                            // so that we can quickly test it is writing to obsidian
+                          : .1
                       }
+                      
                     />
                     <p className="text-xs text-muted-foreground">
                       how often screenpipe will create a new log entry about

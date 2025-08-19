@@ -236,7 +236,7 @@ export function AIPanel({
 
 				// Get unique apps in this frame
 				const frameApps = new Set(
-					frame.devices.map((device) => device.metadata.app_name),
+					frame.devices.map((device) => device.metadata?.app_name || "Unknown App"),
 				);
 
 				// Check if we already have this app in this minute
@@ -248,7 +248,7 @@ export function AIPanel({
 
 					// Check if apps are the same
 					const existingApps = new Set(
-						existing.devices.map((device) => device.metadata.app_name),
+						existing.devices.map((device) => device.metadata?.app_name || "Unknown App"),
 					);
 					return (
 						Array.from(frameApps).every((app) => existingApps.has(app)) &&

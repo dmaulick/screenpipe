@@ -117,7 +117,7 @@ export const AGENTS: Agent[] = [
         ) {
           currentChunk.push({
             timestamp: frame.timestamp,
-            apps: frame.devices.map((d) => d.metadata.app_name),
+            apps: frame.devices.map((d) => d.metadata?.app_name || "Unknown App"),
             windows: frame.devices.map((d) => d.metadata.window_name),
             text: frame.devices.map((d) => d.metadata.ocr_text).filter(Boolean),
             audio: frame.devices.flatMap((d) => d.audio),
@@ -228,7 +228,7 @@ export const AGENTS: Agent[] = [
       const windowData = frames.map((frame) => ({
         timestamp: frame.timestamp,
         windows: frame.devices.map((device) => ({
-          app: device.metadata.app_name,
+          app: device.metadata?.app_name || "Unknown App",
           window: device.metadata.window_name,
         })),
       }));

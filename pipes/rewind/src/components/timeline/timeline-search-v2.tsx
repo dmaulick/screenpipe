@@ -257,13 +257,13 @@ export function TimelineSearch2({
         <DialogPortal>
           <DialogOverlay className="backdrop-blur-sm" />
           <DialogContent className="sm:max-w-[500px]">
-            <DialogTitle>search your timeline</DialogTitle>
+            <DialogTitle>Query Juno Memory</DialogTitle>
             <div className="p-6">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   autoFocus
-                  placeholder="search in your timeline..."
+                  placeholder="Query your platform engineering sessions..."
                   className="pl-9 h-12"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}

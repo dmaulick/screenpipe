@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Obsidian • Screenpipe",
+  title: "Juno",
   description: "Turn your screen time into a living knowledge base with AI",
 };
 

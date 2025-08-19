@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Timeline • Screenpipe",
-	description: "View your screenpipe recordings in a timeline",
+	title: "Juno",
+	description: "Clone your platform engineering expertise into AI agents",
 };
 
 export const dynamic = "force-dynamic";
@@ -44,6 +44,9 @@ export default async function RootLayout({
 
 	return (
 		<html lang="en">
+			<head>
+				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+			</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
